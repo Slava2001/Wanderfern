@@ -16,5 +16,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build
-      run: echo "Ok"
+    - name: Build debug
+      run: make
+
+    - name: Build release
+      run: make BUILD=release

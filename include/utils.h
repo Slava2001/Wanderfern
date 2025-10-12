@@ -12,8 +12,9 @@
 #endif
 
 #define __log(lvl, ...) do { \
-    (void)fprintf(stderr, __FILE__":%d ["lvl"]: ", __LINE__); \
+    (void)fprintf(stderr, __FILE__":%d %s ["lvl"]: ", __LINE__, __func__); \
     (void)fprintf(stderr, ##__VA_ARGS__); \
+    (void)fprintf(stderr, "\n"); \
 } while(0)
 
 #if DBG >= LOG_LVL

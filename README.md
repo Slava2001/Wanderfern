@@ -33,6 +33,12 @@ make BUILD=release
 ```
 ### Запуск
 
+#### Linux
 ```sh
-make run BUILD=release
+./wanderfern
+```
+
+#### Windows
+```sh
+.\wanderfern.exe
 ```

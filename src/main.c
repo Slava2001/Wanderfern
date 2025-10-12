@@ -16,6 +16,7 @@
 void draw_rectangle(void);
 
 int main(void) {
+    logi("Starting app");
     rci(!glfwInit(), EXIT_FAILURE, "Failed to initialize GLFW");
     GLFWwindow* window = glfwCreateWindow(WINDOW_W, WINDOW_H, WINDOW_TITLE, NULL, NULL);
     rci(!window, EXIT_FAILURE, "Failed to create GLFW window");

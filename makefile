@@ -7,7 +7,12 @@ CFLAGS = -std=c2x -Werror -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wforma
          -Wswitch-enum -Winit-self -Wlogical-op -Wbad-function-cast \
          -Wcast-qual -Wnested-externs -Wstrict-overflow=5 -O0 -g -Iinclude -D_DEFAULT_SOURCE \
 		 -fmacro-prefix-map=$(pwd)=./
-LDFLAGS = -lglfw -lGL -lm
+LDFLAGS = -lm
+ifeq ($(OS),Windows_NT)
+	LDFLAGS += -L/mingw64/lib -lglfw3 -lglew32 -lopengl32 -lgdi32
+else
+	LDFLAGS += -lglfw -lGL -lm
+endif
 BUILDDIR = build
 
 ifeq ($(BUILD),release)

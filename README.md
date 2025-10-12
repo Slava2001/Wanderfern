@@ -21,6 +21,9 @@ sudo apt install build-essential libglfw3-dev libglu1-mesa-dev libglew-dev libx1
 ```
 
 #### Windows
+
+Необходимо скачать и установить msys2: https://www.msys2.org/
+
 ```sh
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-glew mingw-w64-x86_64-glfw
 ```

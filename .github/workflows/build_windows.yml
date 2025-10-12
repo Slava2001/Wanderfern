@@ -1,10 +1,10 @@
 name: Build (Windows)
 
 on:
-  # push:
-  #   branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 env:
   BUILD_TYPE: Release
@@ -16,5 +16,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build
-      run: echo "Ok"
+    - name: Install MSYS2 and dependencies
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-make
+          mingw-w64-x86_64-glew
+          mingw-w64-x86_64-glfw
+
+    - name: Build Debug
+      run: |
+        make clean
+        make
+
+    - name: Build Release
+      run: |
+        make clean
+        make BUILD=release

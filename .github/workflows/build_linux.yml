@@ -16,8 +16,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build debug
-      run: make
+    - name: Preparing
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential libglfw3-dev libglu1-mesa-dev libglew-dev libx11-dev
 
-    - name: Build release
-      run: make BUILD=release
+    - name: Build Debug
+      run: |
+        make clean
+        make
+
+    - name: Build Release
+      run: |
+        make clean
+        make BUILD=release

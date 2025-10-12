@@ -29,11 +29,11 @@ jobs:
     - name: Build Debug
       shell: msys2 {0}
       run: |
-        make clean
-        make
+        mingw32-make clean
+        mingw32-make
 
     - name: Build Release
       shell: msys2 {0}
       run: |
-        make clean
-        make BUILD=release
+        mingw32-make clean
+        mingw32-make BUILD=release

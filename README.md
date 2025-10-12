@@ -15,6 +15,7 @@
 ### Установка зависимостей
 
 #### Linux
+
 ```sh
 sudo apt update
 sudo apt install build-essential libglfw3-dev libglu1-mesa-dev libglew-dev libx11-dev
@@ -31,17 +32,29 @@ pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-glew mingw
 Убедитесь, что DLL-файлы GLFW находятся в PATH или рядом с исполняемым файлом.
 
 ### Сборка
+
+#### Linux
+
 ```sh
 make BUILD=release
 ```
+
+#### Windows
+
+```sh
+mingw32-make BUILD=release
+```
+
 ### Запуск
 
 #### Linux
+
 ```sh
 ./wanderfern
 ```
 
 #### Windows
+
 ```sh
 .\wanderfern.exe
 ```

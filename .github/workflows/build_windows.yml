@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install MSYS2 and dependencies
+    - name: Setup MSYS2 and dependencies
       uses: msys2/setup-msys2@v2
       with:
         update: true
@@ -27,11 +27,13 @@ jobs:
           mingw-w64-x86_64-glfw
 
     - name: Build Debug
+      shell: msys2 {0}
       run: |
         make clean
         make
 
     - name: Build Release
+      shell: msys2 {0}
       run: |
         make clean
         make BUILD=release

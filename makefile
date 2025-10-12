@@ -21,21 +21,21 @@ ifeq ($(BUILD),release)
 endif
 
 SRC = src/main.c
-OBJ = $(SRC:=.o)
+OBJ = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRC))
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	@echo "[build] Link target: $@"
-	@$(CC) $(CFLAGS) -o $@ $(addprefix $(BUILDDIR)/,$+) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
 
-%.c.o :: %.c
+$(BUILDDIR)/%.c.o: %.c
 	@echo "[build] Compile $(@F)"
-	@mkdir -p $(BUILDDIR)/$(@D)
-	@$(CC) $(CFLAGS) -c $< -o $(BUILDDIR)/$@
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJ) $(TARGET)
+	@rm -rf $(OBJ) $(TARGET)
 
 run: all
 	@$(BUILDDIR)/$(TARGET)

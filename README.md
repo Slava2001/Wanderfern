@@ -1,8 +1,9 @@
-<p align="center">
-    <img src="logo.svg"/>
-</p>
-    [![Build (Linux)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_linux.yml/badge.svg)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_linux.yml)
-    [![Build (Windows)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_windows.yml/badge.svg)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_windows.yml)
+<div align="center">
+<img src="logo.svg"/>
+    
+[![Build (Linux)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_linux.yml/badge.svg)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_linux.yml)
+[![Build (Windows)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_windows.yml/badge.svg)](https://github.com/Slava2001/Wanderfern/actions/workflows/build_windows.yml)
+</div>
 
 ---
 

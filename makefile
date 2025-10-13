@@ -38,6 +38,6 @@ clean:
 	@rm -rf $(OBJ) $(TARGET)
 
 run: all
-	@$(BUILDDIR)/$(TARGET)
+	./$(TARGET)
 
 .PHONY: all clean run

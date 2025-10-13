@@ -11,10 +11,10 @@
 #define LOG_LVL INFO
 #endif
 
-#define __log(lvl, ...) do { \
+#define __log(lvl, ...) do {                                               \
     (void)fprintf(stderr, __FILE__":%d %s ["lvl"]: ", __LINE__, __func__); \
-    (void)fprintf(stderr, ##__VA_ARGS__); \
-    (void)fprintf(stderr, "\n"); \
+    (void)fprintf(stderr, ##__VA_ARGS__);                                  \
+    (void)fprintf(stderr, "\n");                                           \
 } while(0)
 
 #if DBG >= LOG_LVL
@@ -37,4 +37,3 @@
 
 #define rci(cond, code, msg) if (cond) { loge(msg); return code; }
 #define reci(cond, msg) rci(cond, -1, msg)
-

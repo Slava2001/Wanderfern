@@ -5,7 +5,7 @@ CFLAGS = -std=c2x -Werror -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wforma
          -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations \
          -Wredundant-decls -Wundef -Wfloat-equal -Wpointer-arith -Wswitch-default \
          -Wswitch-enum -Winit-self -Wlogical-op -Wbad-function-cast \
-         -Wcast-qual -Wnested-externs -Wstrict-overflow=5 -O0 -g -Iinclude -D_DEFAULT_SOURCE \
+         -Wcast-qual -Wnested-externs -Wstrict-overflow=5 -O0 -g -D_DEFAULT_SOURCE \
 		 -fmacro-prefix-map=$(pwd)=./
 LDFLAGS = -lm
 ifeq ($(OS),Windows_NT)
@@ -20,19 +20,24 @@ ifeq ($(BUILD),release)
     CFLAGS += -O3 -DNDEBUG
 endif
 
-SRC = src/main.c
+INCLUDE = include \
+          include/scene
+SRC = src/main.c \
+      src/scene/main_menu.c
 OBJ = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRC))
+
+CFLAGS += $(addprefix -I, $(INCLUDE))
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	@echo "[build] Link target: $@"
-	@$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS)
 
 $(BUILDDIR)/%.c.o: %.c
 	@echo "[build] Compile $(@F)"
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $^ -o $@
 
 clean:
 	@rm -rf $(OBJ) $(TARGET)

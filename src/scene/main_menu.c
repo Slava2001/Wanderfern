@@ -1,6 +1,7 @@
 #include "main_menu.h"
 #include "gl.h"
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 int update(void *ctx, SceneUpdateCtx *uctx);

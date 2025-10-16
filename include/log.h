@@ -11,29 +11,26 @@
 #define LOG_LVL INFO
 #endif
 
-#define __log(lvl, ...) do {                                               \
+#define generic_log(lvl, ...) do {                                         \
     (void)fprintf(stderr, __FILE__":%d %s ["lvl"]: ", __LINE__, __func__); \
     (void)fprintf(stderr, ##__VA_ARGS__);                                  \
     (void)fprintf(stderr, "\n");                                           \
 } while(0)
 
 #if DBG >= LOG_LVL
-#define logd(msg) __log("Dbg ", msg)
+#define logd(...) generic_log("Dbg ", ##__VA_ARGS__)
 #else
-#define logd(msg)
+#define logd(...)
 #endif
 
 #if INFO >= LOG_LVL
-#define logi(msg) __log("Info", msg)
+#define logi(...) generic_log("Info", ##__VA_ARGS__)
 #else
-#define logi(msg)
+#define logi(...)
 #endif
 
 #if ERR >= LOG_LVL
-#define loge(msg) __log("Err ", msg)
+#define loge(...) generic_log("Err ", ##__VA_ARGS__)
 #else
-#define loge(msg)
+#define loge(...)
 #endif
-
-#define rci(cond, code, msg) if (cond) { loge(msg); return code; }
-#define reci(cond, msg) rci(cond, -1, msg)

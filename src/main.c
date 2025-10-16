@@ -1,40 +1,35 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #define LOG_LVL DBG
-#include "utils.h"
+#include "log.h"
 #include "gl.h"
 #include "scene.h"
-#include "main_menu.h"
+#include "result.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #define WINDOW_W 800
 #define WINDOW_H 600
 #define WINDOW_TITLE "Wanderfern"
 
-int main(void) {
+int main() {
     logi("Starting app");
     rci(!glfwInit(), EXIT_FAILURE, "Failed to initialize GLFW");
     GLFWwindow* window = glfwCreateWindow(WINDOW_W, WINDOW_H, WINDOW_TITLE, NULL, NULL);
     rci(!window, EXIT_FAILURE, "Failed to create GLFW window");
-
     glfwMakeContextCurrent(window);
     glViewport(0, 0, WINDOW_W, WINDOW_H);
-
-    MainMenu menu;
-    main_menu_new(&menu);
-    Scene *scene = (Scene *)&menu;
-
+    Scene *scene = try(scene_build(SID_MAINMENU), EXIT_FAILURE, "Failed to create scene");
+    SceneUpdateCtx uctx = (SceneUpdateCtx) { .delta_time = 1.0f/60, .window = window };
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-
-        scene->update(scene, 1.0f/60);
+        scene->update(scene, &uctx);
         scene->draw(scene);
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+    scene_destroy(scene);
     glfwDestroyWindow(window);
     glfwTerminate();
+    logi("Terminating app");
     return EXIT_SUCCESS;
 }

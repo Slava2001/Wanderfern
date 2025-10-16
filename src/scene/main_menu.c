@@ -3,24 +3,26 @@
 
 #include <math.h>
 
-int update(void *ctx, float delta_time);
+int update(void *ctx, SceneUpdateCtx *uctx);
 int draw(void *ctx);
 
-int main_menu_new(MainMenu *main_menu) {
-    (*main_menu) = (MainMenu) {
+ResultMainMenu main_menu_new() {
+    return (ResultMainMenu) Ok(((MainMenu) {
         .base = (Scene) {
             .update = update,
-            .draw = draw
+            .draw = draw,
+            .destroy = NULL
         },
         .angle_rad = 0
-    };
-    return 0;
+    }));
 }
 
-int update(void *ctx, float delta_time) {
+int update(void *ctx, SceneUpdateCtx *uctx) {
     MainMenu *this = (MainMenu *)ctx;
     const float ROTATION_SPEED_RAD_PER_S = 2.0f * (float)M_PI;
-    this->angle_rad = this->angle_rad + ROTATION_SPEED_RAD_PER_S * delta_time;
+    if (glfwGetKey(uctx->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        this->angle_rad = this->angle_rad + ROTATION_SPEED_RAD_PER_S * uctx->delta_time;
+    }
     return 0;
 }
 

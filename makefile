@@ -11,7 +11,7 @@ ifeq ($(OS),Windows_NT)
 	CFLAGS += -I/mingw64/include
 	LDFLAGS += -L/mingw64/lib -lglfw3 -lglew32 -lopengl32 -lgdi32
 else
-	LDFLAGS += -lglfw -lGL -lm
+	LDFLAGS += -lglfw -lGL -lGLU -lm
 endif
 BUILDDIR = build
 
@@ -19,11 +19,14 @@ ifeq ($(BUILD),release)
     CFLAGS += -O3 -DNDEBUG
 endif
 
-INCLUDE = include \
+INCLUDE = include       \
           include/scene
-SRC = src/main.c \
+SRC = src/main.c            \
       src/scene/main_menu.c \
-      src/scene/scene.c
+      src/scene/scene.c     \
+      src/camera.c          \
+      src/vec.c             \
+      src/player_ctl.c
 OBJ = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRC))
 
 CFLAGS += $(addprefix -I, $(INCLUDE))

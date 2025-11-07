@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define WINDOW_W 800
+#define WINDOW_W 600
 #define WINDOW_H 600
 #define WINDOW_TITLE "Wanderfern"
 
@@ -17,11 +17,12 @@ int main() {
     GLFWwindow* window = glfwCreateWindow(WINDOW_W, WINDOW_H, WINDOW_TITLE, NULL, NULL);
     rci(!window, EXIT_FAILURE, "Failed to create GLFW window");
     glfwMakeContextCurrent(window);
+    glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, WINDOW_W, WINDOW_H);
     Scene *scene = try(scene_build(SID_MAINMENU), EXIT_FAILURE, "Failed to create scene");
     SceneUpdateCtx uctx = (SceneUpdateCtx) { .delta_time = 1.0f/60, .window = window };
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         scene->update(scene, &uctx);
         scene->draw(scene);
         glfwSwapBuffers(window);

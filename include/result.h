@@ -10,7 +10,7 @@
 
 
 #define decl_result(name_suffix, val_type) \
-    typedef struct Result ##name_suffix { bool is_err; val_type val; } Result ##name_suffix;
+    typedef struct Result ##name_suffix { bool is_err; val_type val; } Result ##name_suffix
 
 #define Ok(value) { .is_err = false, .val = (value) }
 

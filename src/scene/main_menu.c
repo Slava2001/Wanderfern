@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-int update(void *ctx, SceneUpdateCtx *uctx);
+int update(void *ctx, const SceneUpdateCtx *uctx);
 int draw(void *ctx);
 
 ResultMainMenu main_menu_new() {
@@ -14,31 +14,69 @@ ResultMainMenu main_menu_new() {
             .draw = draw,
             .destroy = NULL
         },
-        .angle_rad = 0
+        .player = try(playerctl_new((CameraOptions) {
+            .position = vec3d(0, 0, 15),
+            .angles = vec3d(0, 0, 0),
+            .fov = 90,
+            .aspect = 1,
+            .near_z = 0.1,
+            .far_z = 100
+        }), (ResultMainMenu)Err(), "Failed to create player")
     }));
 }
 
-int update(void *ctx, SceneUpdateCtx *uctx) {
+int update(void *ctx, const SceneUpdateCtx *uctx) {
     MainMenu *this = (MainMenu *)ctx;
-    const float ROTATION_SPEED_RAD_PER_S = 2.0f * (float)M_PI;
-    if (glfwGetKey(uctx->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        this->angle_rad = this->angle_rad + ROTATION_SPEED_RAD_PER_S * uctx->delta_time;
-    }
+    playerctl_update(&this->player, uctx);
     return 0;
 }
+
+void draw_cube(Vec3d pos);
 
 int draw(void *ctx) {
     MainMenu *this = (MainMenu *)ctx;
     glPushMatrix();
-    glRotatef(this->angle_rad, 0, 0, 1);
-    glBegin(GL_TRIANGLE_FAN);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex2f(-0.5f, -0.5f);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex2f( 0.5f, -0.5f);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex2f( 0.0f,  0.5f);
-    glEnd();
+    playerctl_set_view(&this->player);
+            for (int z = 0; z <= 10; z += 2) {
+                draw_cube(vec3d(0, 0, z));
+                draw_cube(vec3d(0, z, 0));
+                draw_cube(vec3d(z, 0, 0));
+            }
     glPopMatrix();
     return 0;
+}
+
+void draw_cube(Vec3d pos) {
+    glPushMatrix();
+    glTranslated(pos.x, pos.y, pos.z);
+    glBegin(GL_TRIANGLE_STRIP);
+        struct {
+            float r, g, b;
+            float x, y, z;
+        } array[] = {
+            { 1.0f, 0.0f, 0.0f, -0.5f,  0.5f,  0.5f },
+            { 0.0f, 1.0f, 0.0f,  0.5f,  0.5f,  0.5f },
+            { 0.0f, 0.0f, 1.0f, -0.5f, -0.5f,  0.5f },
+            { 0.0f, 1.0f, 1.0f,  0.5f, -0.5f,  0.5f },
+            { 1.0f, 1.0f, 0.0f,  0.5f, -0.5f, -0.5f },
+            { 0.0f, 1.0f, 0.0f,  0.5f,  0.5f,  0.5f },
+            { 1.0f, 0.0f, 1.0f,  0.5f,  0.5f, -0.5f },
+            { 1.0f, 0.0f, 0.0f, -0.5f,  0.5f,  0.5f },
+            { 1.0f, 1.0f, 1.0f, -0.5f,  0.5f, -0.5f },
+            { 0.0f, 1.0f, 1.0f, -0.5f, -0.5f,  0.5f },
+            { 0.0f, 1.0f, 0.0f, -0.5f, -0.5f, -0.5f },
+            { 1.0f, 1.0f, 0.0f,  0.5f, -0.5f, -0.5f },
+            { 1.0f, 1.0f, 1.0f, -0.5f,  0.5f, -0.5f },
+            { 1.0f, 0.0f, 1.0f,  0.5f,  0.5f, -0.5f }
+        };
+
+        for (unsigned i = 0; i < sizeof(array)/sizeof(struct {
+            float r, g, b;
+            float x, y, z;
+        }); i++) {
+            glColor3f(array[i].r, array[i].g, array[i].b);
+            glVertex3f(array[i].x, array[i].y, array[i].z);
+        }
+    glEnd();
+    glPopMatrix();
 }

@@ -15,13 +15,14 @@ ResultMainMenu main_menu_new() {
             .destroy = NULL
         },
         .player = try(playerctl_new((CameraOptions) {
-            .position = vec3d(0, 0, 15),
+            .position = vec3d(100, 1.5, 100),
             .angles = vec3d(0, 0, 0),
             .fov = 90,
             .aspect = 1,
             .near_z = 0.1,
             .far_z = 100
-        }), (ResultMainMenu)Err(), "Failed to create player")
+        }), (ResultMainMenu)Err(), "Failed to create player"),
+        .terrain = try(terrain_new(), (ResultMainMenu)Err(), "Failed to create terrain")
     }));
 }
 
@@ -35,13 +36,15 @@ void draw_cube(Vec3d pos);
 
 int draw(void *ctx) {
     MainMenu *this = (MainMenu *)ctx;
+    Vec3d player_pos = playerctl_get_position(&this->player);
     glPushMatrix();
     playerctl_set_view(&this->player);
-            for (int z = 0; z <= 10; z += 2) {
-                draw_cube(vec3d(0, 0, z));
-                draw_cube(vec3d(0, z, 0));
-                draw_cube(vec3d(z, 0, 0));
-            }
+    terrain_draw(&this->terrain, player_pos.x, player_pos.z);
+    // for (int z = 0; z <= 10; z += 2) {
+    //     draw_cube(vec3d(0, 0, z));
+    //     draw_cube(vec3d(0, z, 0));
+    //     draw_cube(vec3d(z, 0, 0));
+    // }
     glPopMatrix();
     return 0;
 }

@@ -3,10 +3,12 @@
 #include "scene.h"
 #include "result.h"
 #include "player_ctl.h"
+#include "terrain.h"
 
 typedef struct MainMenu {
     Scene base;
     PlayerCtl player;
+    Terrain terrain;
 } MainMenu;
 
 decl_result(MainMenu, MainMenu);

@@ -26,7 +26,8 @@ SRC = src/main.c            \
       src/scene/scene.c     \
       src/camera.c          \
       src/vec.c             \
-      src/player_ctl.c
+      src/player_ctl.c      \
+      src/terrain.c
 OBJ = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRC))
 
 CFLAGS += $(addprefix -I, $(INCLUDE))

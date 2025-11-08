@@ -53,7 +53,7 @@ void playerctl_update(PlayerCtl *ctl, const SceneUpdateCtx *uctx) {
     cam_angles.y = CLAMP(cam_angles.y, -89, 89);
     camera_set_angles(&ctl->camera, cam_angles);
 
-    const float MOVING_SPEED_M_PER_S = 0.1f;
+    const float MOVING_SPEED_M_PER_S = 0.03f;
     Vec3d cam_pos_delta = vec3d(0, 0, 0);
     double yaw_rad = cam_angles.x * M_PI / 180.0;
     if (glfwGetKey(uctx->window, GLFW_KEY_W) == GLFW_PRESS) {
@@ -78,4 +78,8 @@ void playerctl_update(PlayerCtl *ctl, const SceneUpdateCtx *uctx) {
 
 void playerctl_set_view(PlayerCtl *ctl) {
     camera_set_view(&ctl->camera);
+}
+
+Vec3d playerctl_get_position(PlayerCtl *ctl) {
+    return camera_get_position(&ctl->camera);
 }

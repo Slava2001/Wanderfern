@@ -2,6 +2,7 @@
 #include "util.h"
 
 #include <stdlib.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 ResultTerrain terrain_new() {
@@ -9,7 +10,7 @@ ResultTerrain terrain_new() {
 }
 
 #define TERRAIN_RADIUS 20
-#define CELL_SIDE 0.5
+#define CELL_SIDE ((double)(0.5))
 void terrain_draw(Terrain *ter, GLdouble x, GLdouble z) {
     (void)ter;
     GLdouble ix = (x - TERRAIN_RADIUS * CELL_SIDE);
@@ -31,16 +32,16 @@ void terrain_draw(Terrain *ter, GLdouble x, GLdouble z) {
                     glColor3d(0.5 + 0.5 * ((float)(((int)(ix / CELL_SIDE) + iix) % 2)),
                               0.5 + 0.5 * ((float)(((int)(iz / CELL_SIDE) + iiz) % 2)),
                               0.5);
-                    glVertex3d(-CELL_SIDE / 2, y, -CELL_SIDE / 2);
-                    glVertex3d( CELL_SIDE / 2, y, -CELL_SIDE / 2);
-                    glVertex3d( CELL_SIDE / 2, y,  CELL_SIDE / 2);
-                    glVertex3d(-CELL_SIDE / 2, y,  CELL_SIDE / 2);
+                    glTexCoord2f(0, 0); glVertex3d(-CELL_SIDE / 2, y, -CELL_SIDE / 2);
+                    glTexCoord2f(1, 0); glVertex3d( CELL_SIDE / 2, y, -CELL_SIDE / 2);
+                    glTexCoord2f(1, 1); glVertex3d( CELL_SIDE / 2, y,  CELL_SIDE / 2);
+                    glTexCoord2f(0, 1); glVertex3d(-CELL_SIDE / 2, y,  CELL_SIDE / 2);
                 glEnd();
             }
-            glTranslatef(0, 0, CELL_SIDE);
+            glTranslated(0, 0, CELL_SIDE);
         }
         glPopMatrix();
-        glTranslatef(CELL_SIDE, 0, 0);
+        glTranslated(CELL_SIDE, 0, 0);
     }
     glPopMatrix();
 }

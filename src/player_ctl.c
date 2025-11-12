@@ -1,6 +1,7 @@
 #include "player_ctl.h"
 #include "util.h"
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 ResultPlayerCtl playerctl_new(CameraOptions ops) {

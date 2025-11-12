@@ -15,6 +15,7 @@ int main() {
     logi("Starting app");
     rci(!glfwInit(), EXIT_FAILURE, "Failed to initialize GLFW");
     GLFWwindow* window = glfwCreateWindow(WINDOW_W, WINDOW_H, WINDOW_TITLE, NULL, NULL);
+    logi("OpenGL version: %s", glGetString(GL_VERSION));
     rci(!window, EXIT_FAILURE, "Failed to create GLFW window");
     glfwMakeContextCurrent(window);
     glEnable(GL_DEPTH_TEST);

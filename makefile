@@ -11,7 +11,7 @@ ifeq ($(OS),Windows_NT)
 	CFLAGS += -I/mingw64/include
 	LDFLAGS += -L/mingw64/lib -lglfw3 -lglew32 -lopengl32 -lgdi32
 else
-	LDFLAGS += -lglfw -lGL -lGLU -lm
+	LDFLAGS += -lglfw -lGL -lGLU
 endif
 BUILDDIR = build
 

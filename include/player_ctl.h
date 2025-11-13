@@ -12,6 +12,6 @@ typedef struct PlayerCtl {
 decl_result(PlayerCtl, PlayerCtl);
 
 ResultPlayerCtl playerctl_new(CameraOptions ops);
-void playerctl_update(PlayerCtl *ctl, const SceneUpdateCtx *uctx);
-void playerctl_set_view(PlayerCtl *ctl);
-Vec3d playerctl_get_position(PlayerCtl *ctl);
+void playerctl_update(PlayerCtl *this, const SceneUpdateCtx *uctx);
+void playerctl_set_view(PlayerCtl *this);
+Vec3d playerctl_get_position(PlayerCtl *this);

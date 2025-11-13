@@ -25,10 +25,10 @@ decl_result(Camera, Camera);
  * @param angles Euler angles (yaw, pitch, roll)
  */
 ResultCamera camera_new(CameraOptions ops);
-void camera_set_view(Camera *camera);
-void camera_movevd(Camera *camera, Vec3d delta);
-void camera_rotated(Camera *camera, Vec3d angles);
-Vec3d camera_get_position(Camera *camera);
-Vec3d camera_get_angles(Camera *camera);
-void camera_set_position(Camera *camera, Vec3d position);
-void camera_set_angles(Camera *camera, Vec3d angles);
+void camera_set_view(Camera *this);
+void camera_movevd(Camera *this, Vec3d delta);
+void camera_rotated(Camera *this, Vec3d angles);
+Vec3d camera_get_position(Camera *this);
+Vec3d camera_get_angles(Camera *this);
+void camera_set_position(Camera *this, Vec3d position);
+void camera_set_angles(Camera *this, Vec3d angles);

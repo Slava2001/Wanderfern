@@ -9,4 +9,4 @@ typedef struct Terrain {
 decl_result(Terrain, Terrain);
 
 ResultTerrain terrain_new(void);
-void terrain_draw(Terrain *ter, GLdouble x, GLdouble z);
+void terrain_draw(Terrain *this, GLdouble x, GLdouble z);

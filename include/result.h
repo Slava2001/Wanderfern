@@ -4,9 +4,9 @@
 
 #include <stdbool.h>
 
-#define rci(cond, code, msg) if (cond) { loge(msg); return (code); }
+#define rci(cond, code, ...) if (cond) { loge(__VA_ARGS__); return (code); }
 
-#define reci(cond, msg) rci(cond, -1, msg)
+#define reci(cond, ...) rci(cond, -1, ##__VA_ARGS__)
 
 
 #define decl_result(name_suffix, val_type) \

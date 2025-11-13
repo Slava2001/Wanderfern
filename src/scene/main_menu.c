@@ -5,7 +5,7 @@
 #include <math.h>
 
 int update(void *ctx, const SceneUpdateCtx *uctx);
-int draw(void *ctx);
+int draw(void *ctx, const SceneDrawCtx *dctx, const Transform *transform);
 
 ResultMainMenu main_menu_new() {
     return (ResultMainMenu) Ok(((MainMenu) {
@@ -15,7 +15,7 @@ ResultMainMenu main_menu_new() {
             .destroy = NULL
         },
         .player = try(playerctl_new((CameraOptions) {
-            .position = vec3d(100, 1.5, 100),
+            .position = vec3d(0, 1.5, 0),
             .angles = vec3d(0, 0, 0),
             .fov = 90,
             .aspect = 1,
@@ -34,7 +34,8 @@ int update(void *ctx, const SceneUpdateCtx *uctx) {
 
 void draw_cube(Vec3d pos);
 
-int draw(void *ctx) {
+int draw(void *ctx, const SceneDrawCtx *dctx, const Transform *transform) {
+    (void)dctx;(void)transform;
     MainMenu *this = (MainMenu *)ctx;
     Vec3d player_pos = playerctl_get_position(&this->player);
     glPushMatrix();

@@ -9,9 +9,9 @@ CFLAGS = -std=c2x -Werror -Wall -Wextra  -Wshadow -Wconversion -Wformat=2 -Wcast
 LDFLAGS = -lm
 ifeq ($(OS),Windows_NT)
 	CFLAGS += -I/mingw64/include
-	LDFLAGS += -L/mingw64/lib -lglfw3 -lglew32 -lopengl32 -lgdi32
+	LDFLAGS += -L/mingw64/lib -lglfw3 -lglew -lopengl32 -lgdi32
 else
-	LDFLAGS += -lglfw -lGL -lGLU
+	LDFLAGS += -lglfw -lGL -lGLU -lGLEW
 endif
 BUILDDIR = build
 
@@ -20,14 +20,23 @@ ifeq ($(BUILD),release)
 endif
 
 INCLUDE = include       \
-          include/scene
+          include/scene \
+          3rdparty/stb
 SRC = src/main.c            \
       src/scene/main_menu.c \
       src/scene/scene.c     \
       src/camera.c          \
       src/vec.c             \
       src/player_ctl.c      \
-      src/terrain.c
+      src/terrain.c         \
+      src/gl.c              \
+      src/sprite.c          \
+      src/transform.c       \
+      src/mat.c             \
+      src/shader.c          \
+      src/texture.c         \
+      src/stb_image_impl.c  \
+      src/rect.c
 OBJ = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRC))
 
 CFLAGS += $(addprefix -I, $(INCLUDE))
@@ -42,6 +51,11 @@ $(BUILDDIR)/%.c.o: %.c
 	@echo "[build] Compile $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $^ -o $@
+
+$(BUILDDIR)/src/stb_image_impl.c.o: src/stb_image_impl.c
+	@echo "[build] Compile $(@F) (custom rules)"
+	@mkdir -p $(@D)
+	@$(CC) -I 3rdparty/stb -c $^ -o $@
 
 clean:
 	@rm -rf $(OBJ) $(TARGET)

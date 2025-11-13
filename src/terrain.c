@@ -11,8 +11,8 @@ ResultTerrain terrain_new() {
 
 #define TERRAIN_RADIUS 20
 #define CELL_SIDE ((double)(0.5))
-void terrain_draw(Terrain *ter, GLdouble x, GLdouble z) {
-    (void)ter;
+void terrain_draw(Terrain *this, GLdouble x, GLdouble z) {
+    (void)this;
     GLdouble ix = (x - TERRAIN_RADIUS * CELL_SIDE);
     ix -= fmod(ix, CELL_SIDE);
     GLdouble iz = (z - TERRAIN_RADIUS * CELL_SIDE);

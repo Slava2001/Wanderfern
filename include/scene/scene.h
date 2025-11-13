@@ -2,16 +2,22 @@
 
 #include "result.h"
 #include "gl.h"
+#include "transform.h"
 
 typedef struct SceneUpdateCtx {
-    GLFWwindow *window;
+    Window *window;
     float delta_time;
 } SceneUpdateCtx;
+
+typedef struct SceneDrawCtx {
+    Window *window;
+    float delta_time;
+} SceneDrawCtx;
 
 typedef struct Scene Scene;
 struct Scene {
     int (*update)(void *ctx, const SceneUpdateCtx *update_ctx);
-    int (*draw)(void *ctx);
+    int (*draw)(void *ctx, const SceneDrawCtx *draw_ctx, const Transform *transform);
     void (*destroy)(void *ctx);
 };
 

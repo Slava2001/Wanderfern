@@ -30,57 +30,57 @@ void get_cursor_moving(GLFWwindow* window, double* xpos, double* ypos) {
     old_y = cursor_y;
 }
 
-void playerctl_update(PlayerCtl *ctl, const SceneUpdateCtx *uctx) {
+void playerctl_update(PlayerCtl *this, const SceneUpdateCtx *uctx) {
     const float ROTATING_SPEED_DEGREES_PER_S = 45;
-    Vec3d cam_angles = camera_get_angles(&ctl->camera);
-    if (glfwGetKey(uctx->window, GLFW_KEY_UP) == GLFW_PRESS) {
+    Vec3d cam_angles = camera_get_angles(&this->camera);
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_UP) == GLFW_PRESS) {
         cam_angles.y -= ROTATING_SPEED_DEGREES_PER_S * uctx->delta_time;
     }
-    if (glfwGetKey(uctx->window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         cam_angles.y += ROTATING_SPEED_DEGREES_PER_S * uctx->delta_time;
     }
-    if (glfwGetKey(uctx->window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
         cam_angles.x += ROTATING_SPEED_DEGREES_PER_S * uctx->delta_time;
     }
-    if (glfwGetKey(uctx->window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_LEFT) == GLFW_PRESS) {
         cam_angles.x -= ROTATING_SPEED_DEGREES_PER_S * uctx->delta_time;
     }
     double cursor_dx, cursor_dy;
-    get_cursor_moving(uctx->window, &cursor_dx, &cursor_dy);
+    get_cursor_moving(uctx->window->gl_window, &cursor_dx, &cursor_dy);
     const float CURSOR_SENSITIVITY = 0.5f;
     cam_angles = vec3d_add(cam_angles, vec3d(CURSOR_SENSITIVITY * cursor_dx,
                                              CURSOR_SENSITIVITY * cursor_dy, 0));
     cam_angles.x = fmod(cam_angles.x, 360);
     cam_angles.y = CLAMP(cam_angles.y, -89, 89);
-    camera_set_angles(&ctl->camera, cam_angles);
+    camera_set_angles(&this->camera, cam_angles);
 
     const float MOVING_SPEED_M_PER_S = 0.03f;
     Vec3d cam_pos_delta = vec3d(0, 0, 0);
     double yaw_rad = cam_angles.x * M_PI / 180.0;
-    if (glfwGetKey(uctx->window, GLFW_KEY_W) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_W) == GLFW_PRESS) {
         cam_pos_delta = vec3d_add(cam_pos_delta,
                                   vec3d(cos(yaw_rad - M_PI_2), 0, sin(yaw_rad - M_PI_2)));
     }
-    if (glfwGetKey(uctx->window, GLFW_KEY_S) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_S) == GLFW_PRESS) {
         cam_pos_delta = vec3d_add(cam_pos_delta,
                                   vec3d(-cos(yaw_rad - M_PI_2), 0, -sin(yaw_rad - M_PI_2)));
     }
-    if (glfwGetKey(uctx->window, GLFW_KEY_A) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_A) == GLFW_PRESS) {
         cam_pos_delta = vec3d_add(cam_pos_delta,
                                   vec3d(-cos(yaw_rad), 0, -sin(yaw_rad)));
     }
-    if (glfwGetKey(uctx->window, GLFW_KEY_D) == GLFW_PRESS) {
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_D) == GLFW_PRESS) {
         cam_pos_delta = vec3d_add(cam_pos_delta,
                                   vec3d(cos(yaw_rad), 0, sin(yaw_rad)));
     }
     cam_pos_delta = vec3d_muls(cam_pos_delta, MOVING_SPEED_M_PER_S);
-    camera_movevd(&ctl->camera, cam_pos_delta);
+    camera_movevd(&this->camera, cam_pos_delta);
 }
 
-void playerctl_set_view(PlayerCtl *ctl) {
-    camera_set_view(&ctl->camera);
+void playerctl_set_view(PlayerCtl *this) {
+    camera_set_view(&this->camera);
 }
 
-Vec3d playerctl_get_position(PlayerCtl *ctl) {
-    return camera_get_position(&ctl->camera);
+Vec3d playerctl_get_position(PlayerCtl *this) {
+    return camera_get_position(&this->camera);
 }

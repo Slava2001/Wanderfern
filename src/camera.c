@@ -1,5 +1,6 @@
 #define LOG_LVL INFO
 #include "camera.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 ResultCamera camera_new(CameraOptions ops) {

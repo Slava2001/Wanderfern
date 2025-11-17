@@ -1,4 +1,5 @@
 #include "vec.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 Vec3 vec3(GLfloat x, GLfloat y, GLfloat z) {

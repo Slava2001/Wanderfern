@@ -1,5 +1,6 @@
 #include "sprite.h"
 #include "mat.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 decl_result(SharedShaderPtr, Shader*);

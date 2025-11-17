@@ -9,8 +9,6 @@
 
 typedef struct MainMenu {
     Scene base;
-    Texture texture;
-    Sprite sprite;
     PlayerCtl player;
     Terrain terrain;
 } MainMenu;

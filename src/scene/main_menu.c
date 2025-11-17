@@ -9,21 +9,15 @@ int draw(void *ctx, const SceneDrawCtx *dctx);
 void destroy(void *ctx);
 
 ResultMainMenu main_menu_new() {
-    Texture texture = try(texture_load("assets/cat.jpeg"),
-                          (ResultMainMenu)Err(), "Failed to load texture");
-    Sprite sprite = try(sprite_new(&texture, rect_new(0, 0, 1, 1)),
-                          (ResultMainMenu)Err(), "Failed to create sprite");
     return (ResultMainMenu) Ok(((MainMenu) {
-        .texture = texture,
-        .sprite = sprite,
         .base = (Scene) {
             .update = update,
             .draw = draw,
             .destroy = destroy
         },
         .player = try(playerctl_new((CameraOptions) {
-            .position = vec3(0, 0, 10),
-            .angles = vec3(0, -(float)M_PI_2, 0),
+            .position = vec3(0, 1.5f, 0),
+            .angles = vec3(-1.5, 0, 0),
             .fov = 90,
             .aspect_ration = 1,
             .near_z = 0.1f,
@@ -43,12 +37,12 @@ int draw(void *ctx, const SceneDrawCtx *dctx) {
     (void)dctx;
     MainMenu *this = (MainMenu *)ctx;
     Transform t = playerctl_get_transform(&this->player);
-    sprite_draw(&this->sprite, dctx, &t);
+    Vec3 p = playerctl_get_position(&this->player);
+    terrain_draw(&this->terrain, dctx, &t, p.x, p.z);
     return 0;
 }
 
 void destroy(void *ctx) {
     MainMenu *this = (MainMenu *)ctx;
-    sprite_drop(&this->sprite);
-    texture_drop(&this->texture);
+    (void)this;
 }

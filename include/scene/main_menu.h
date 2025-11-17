@@ -4,9 +4,13 @@
 #include "result.h"
 #include "player_ctl.h"
 #include "terrain.h"
+#include "sprite.h"
+#include "texture.h"
 
 typedef struct MainMenu {
     Scene base;
+    Texture texture;
+    Sprite sprite;
     PlayerCtl player;
     Terrain terrain;
 } MainMenu;

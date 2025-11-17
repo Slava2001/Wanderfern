@@ -29,8 +29,8 @@ void terrain_draw(Terrain *this, GLdouble x, GLdouble z) {
                 GLdouble y = 3 + -10 * sin(dd);
                 y = CLAMP(y, -10, 0);
                 glBegin(GL_QUADS);
-                    glColor3d(0.5 + 0.5 * ((float)(((int)(ix / CELL_SIDE) + iix) % 2)),
-                              0.5 + 0.5 * ((float)(((int)(iz / CELL_SIDE) + iiz) % 2)),
+                    glColor3d(0.5 + 0.5 * ((((int)(ix / CELL_SIDE) + iix) % 2)),
+                              0.5 + 0.5 * ((((int)(iz / CELL_SIDE) + iiz) % 2)),
                               0.5);
                     glTexCoord2f(0, 0); glVertex3d(-CELL_SIDE / 2, y, -CELL_SIDE / 2);
                     glTexCoord2f(1, 0); glVertex3d( CELL_SIDE / 2, y, -CELL_SIDE / 2);

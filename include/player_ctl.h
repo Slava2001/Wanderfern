@@ -13,5 +13,5 @@ decl_result(PlayerCtl, PlayerCtl);
 
 ResultPlayerCtl playerctl_new(CameraOptions ops);
 void playerctl_update(PlayerCtl *this, const SceneUpdateCtx *uctx);
-void playerctl_set_view(PlayerCtl *this);
-Vec3d playerctl_get_position(PlayerCtl *this);
+Transform playerctl_get_transform(PlayerCtl *this);
+Vec3 playerctl_get_position(PlayerCtl *this);

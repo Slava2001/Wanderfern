@@ -1,41 +1,54 @@
-#define LOG_LVL DBG
+#define LOG_LVL INFO
 #include "camera.h"
+#include <math.h>
 
 ResultCamera camera_new(CameraOptions ops) {
-    gluPerspective(ops.fov, ops.aspect, ops.near_z, ops.far_z);
-    return (ResultCamera)Ok(((Camera){ .position = ops.position, .angles = ops.angles }));
+    return (ResultCamera)Ok(((Camera) {
+        .pos = ops.position,
+        .angles = ops.angles,
+        .fov = ops.fov,
+        .aspect_ration = ops.aspect_ration,
+        .near_z = ops.near_z,
+        .far_z = ops.far_z
+    }));
 }
 
-void camera_set_view(Camera *this) {
-    logd("x: %.2f, y: %.2f, z: %.2f, yaw: %.2f, pitch: %.2f, roll: %.2f",
-         this->position.x, this->position.y, this->position.z,
-         this->angles.x, this->angles.y, this->angles.z);
-    glRotated(this->angles.y, 1.0f, 0.0f, 0.0f);
-    glRotated(this->angles.x, 0.0f, 1.0f, 0.0f);
-    glRotated(this->angles.z, 0.0f, 0.0f, 1.0f);
-    glTranslated(-this->position.x, -this->position.y, -this->position.z);
+void camera_movevd(Camera *this, Vec3 delta) {
+    this->pos = vec3_add(this->pos, delta);
 }
 
-void camera_movevd(Camera *this, Vec3d delta) {
-    this->position = vec3d_add(this->position, delta);
+void camera_rotated(Camera *this, Vec3 angles) {
+    this->pos = vec3_add(this->angles, angles);
 }
 
-void camera_rotated(Camera *this, Vec3d angles) {
-    this->angles = vec3d_add(this->angles, angles);
+Vec3 camera_get_position(const Camera *this) {
+    return this->pos;
 }
 
-Vec3d camera_get_position(Camera *this) {
-    return this->position;
-}
-
-Vec3d camera_get_angles(Camera *this) {
+Vec3 camera_get_angles(const Camera *this) {
     return this->angles;
 }
 
-void camera_set_position(Camera *this, Vec3d position) {
-    this->position = position;
+void camera_set_position(Camera *this, Vec3 position) {
+    this->pos = position;
 }
 
-void camera_set_angles(Camera *this, Vec3d angles) {
+void camera_set_angles(Camera *this, Vec3 angles) {
     this->angles = angles;
+}
+
+Vec3 camera_get_dir(const Camera *this) {
+    return vec3_normalize(vec3(cosf(this->angles.x) * cosf(this->angles.y),
+                               sinf(this->angles.x),
+                               cosf(this->angles.x) * sinf(this->angles.y)));
+}
+
+Transform camera_get_transform(const Camera *this) {
+    logd("Camera: pos: (%+0.2f; %+0.2f; %+0.2f) angles: (%+0.2f; %+0.2f; %+0.2f)",
+         this->pos.x, this->pos.y, this->pos.z,
+         this->angles.x, this->angles.y, this->angles.z);
+    Vec3 target = vec3_add(this->pos, camera_get_dir(this));
+    Vec3 up = vec3(0,1,0);
+    Transform t = transform_view_look_at(&t, this->pos, target, up);
+    return transform_view_perspective(&t, 45, 1, 0.1f, 100);
 }

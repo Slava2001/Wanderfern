@@ -3,32 +3,35 @@
 #include "gl.h"
 #include "result.h"
 #include "vec.h"
+#include "transform.h"
+#include "scene.h"
 
 typedef struct Camera {
-    Vec3d position;
-    Vec3d angles;
+    Vec3 pos;
+    Vec3 angles;
+    GLfloat fov;
+    GLfloat aspect_ration;
+    GLfloat near_z;
+    GLfloat far_z;
 } Camera;
 
 typedef struct CameraOptions {
-    Vec3d position;
-    Vec3d angles;
-    GLdouble fov;
-    GLdouble aspect;
-    GLdouble near_z;
-    GLdouble far_z;
+    Vec3 position;
+    Vec3 angles; // (pitch, yaw, roll)
+    GLfloat fov;
+    GLfloat aspect_ration;
+    GLfloat near_z;
+    GLfloat far_z;
 } CameraOptions;
 
 decl_result(Camera, Camera);
 
-/**
- * @param position position (x, y, z)
- * @param angles Euler angles (yaw, pitch, roll)
- */
 ResultCamera camera_new(CameraOptions ops);
-void camera_set_view(Camera *this);
-void camera_movevd(Camera *this, Vec3d delta);
-void camera_rotated(Camera *this, Vec3d angles);
-Vec3d camera_get_position(Camera *this);
-Vec3d camera_get_angles(Camera *this);
-void camera_set_position(Camera *this, Vec3d position);
-void camera_set_angles(Camera *this, Vec3d angles);
+Transform camera_get_transform(const Camera *this);
+void camera_movevd(Camera *this, Vec3 delta);
+void camera_rotated(Camera *this, Vec3 angles);
+Vec3 camera_get_position(const Camera *this);
+Vec3 camera_get_angles(const Camera *this);
+Vec3 camera_get_dir(const Camera *this);
+void camera_set_position(Camera *this, Vec3 position);
+void camera_set_angles(Camera *this, Vec3 angles);

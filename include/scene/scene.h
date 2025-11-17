@@ -12,12 +12,13 @@ typedef struct SceneUpdateCtx {
 typedef struct SceneDrawCtx {
     Window *window;
     float delta_time;
+    double elapsed_time;
 } SceneDrawCtx;
 
 typedef struct Scene Scene;
 struct Scene {
     int (*update)(void *ctx, const SceneUpdateCtx *update_ctx);
-    int (*draw)(void *ctx, const SceneDrawCtx *draw_ctx, const Transform *transform);
+    int (*draw)(void *ctx, const SceneDrawCtx *draw_ctx);
     void (*destroy)(void *ctx);
 };
 

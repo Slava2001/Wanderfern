@@ -18,7 +18,7 @@ ResultTerrain terrain_new() {
                             rect_new(x / 12.0f, y / 10.0f, 1.0f / 12.0f, 1.0f / 10.0f)),
                             (ResultTerrain)Err(), "Failed to create sprite");
         ter.sprite[i].transform = transform_rotate(&ter.sprite[i].transform,
-                                                   (float)M_PI_2, vec3(1, 0, 0));
+                                                   -(float)M_PI_2, vec3(1, 0, 0));
     }
     return (ResultTerrain)Ok(ter);
 }

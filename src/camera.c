@@ -49,7 +49,7 @@ Transform camera_get_transform(const Camera *this) {
          this->pos.x, this->pos.y, this->pos.z,
          this->angles.x, this->angles.y, this->angles.z);
     Vec3 target = vec3_add(this->pos, camera_get_dir(this));
-    Vec3 up = vec3(0,1,0);
+    Vec3 up = vec3_normalize(vec3(0, 1, 0));
     Transform t = transform_view_look_at(&t, this->pos, target, up);
     return transform_view_perspective(&t, this->fov, this->aspect_ration,
                                       this->near_z, this->far_z);

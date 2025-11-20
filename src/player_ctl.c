@@ -29,7 +29,7 @@ void playerctl_update(PlayerCtl *this, const SceneUpdateCtx *uctx) {
     if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_LEFT) == GLFW_PRESS) {
         cam_angles.y -= ROTATING_SPEED_RAD_PER_S * uctx->delta_time;
     }
-    // #define ENABLE_CURSOR_SUPPORT
+    #define ENABLE_CURSOR_SUPPORT
     #ifdef ENABLE_CURSOR_SUPPORT
     GLfloat cursor_dx, cursor_dy;
     get_cursor_moving(uctx->window->gl_window, &cursor_dx, &cursor_dy);
@@ -42,7 +42,7 @@ void playerctl_update(PlayerCtl *this, const SceneUpdateCtx *uctx) {
     cam_angles.x = CLAMP(cam_angles.x, -x_angle_range, x_angle_range);
     camera_set_angles(&this->camera, cam_angles);
 
-    const float MOVING_SPEED_M_PER_S = 0.03f;
+    const float MOVING_SPEED_M_PER_S = 1.8f;
     Vec3 cam_pos_delta = vec3(0, 0, 0);
     Vec3 cam_dir = camera_get_dir(&this->camera);
     cam_dir.y = 0;
@@ -62,8 +62,19 @@ void playerctl_update(PlayerCtl *this, const SceneUpdateCtx *uctx) {
     if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_D) == GLFW_PRESS) {
         cam_pos_delta = vec3_add(cam_pos_delta, cam_right);
     }
-    cam_pos_delta = vec3_muls(cam_pos_delta, MOVING_SPEED_M_PER_S);
+    cam_pos_delta = vec3_muls(cam_pos_delta, MOVING_SPEED_M_PER_S * uctx->delta_time);
     camera_movevd(&this->camera, cam_pos_delta);
+
+    GLfloat fov = camera_get_fov(&this->camera);
+    const GLfloat FOV_CHANGE_SPEED = 20.0f;
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_PAGE_UP) == GLFW_PRESS) {
+        fov -= FOV_CHANGE_SPEED * uctx->delta_time;
+    }
+    if (glfwGetKey(uctx->window->gl_window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS) {
+        fov += FOV_CHANGE_SPEED * uctx->delta_time;
+    }
+    fov = CLAMP(fov, 10, 170);
+    camera_set_fov(&this->camera, fov);
 }
 
 Transform playerctl_get_transform(PlayerCtl *this) {

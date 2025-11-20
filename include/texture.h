@@ -10,4 +10,5 @@ typedef struct Texture {
 decl_result(Texture, Texture);
 
 ResultTexture texture_load(const char *path);
+void texture_use(const Texture *this, GLuint slot_id);
 void texture_drop(Texture *this);

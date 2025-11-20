@@ -55,7 +55,7 @@ Transform transform_scale(const Transform *this, Vec3 coeff) {
 
 Transform transform_apply(const Transform *this, const Transform *oth) {
     return (Transform) {
-        .projection = oth->projection,
+        .projection = this->projection,
         .view = mat4_mul(&this->view, &oth->view)
     };
 }

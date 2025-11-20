@@ -51,5 +51,14 @@ Transform camera_get_transform(const Camera *this) {
     Vec3 target = vec3_add(this->pos, camera_get_dir(this));
     Vec3 up = vec3(0,1,0);
     Transform t = transform_view_look_at(&t, this->pos, target, up);
-    return transform_view_perspective(&t, 45, 1, 0.1f, 100);
+    return transform_view_perspective(&t, this->fov, this->aspect_ration,
+                                      this->near_z, this->far_z);
+}
+
+GLfloat camera_get_fov(const Camera *this) {
+    return this->fov;
+}
+
+void camera_set_fov(Camera *this, GLfloat fov) {
+    this->fov = fov;
 }

@@ -28,5 +28,5 @@ enum SceneId {
 
 decl_result(ScenePtr, Scene*);
 
-ResultScenePtr scene_build(enum SceneId id);
+ResultScenePtr scene_build(enum SceneId id, const Window* window);
 void scene_destroy(Scene *scene);

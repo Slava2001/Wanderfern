@@ -35,3 +35,5 @@ Vec3 camera_get_angles(const Camera *this);
 Vec3 camera_get_dir(const Camera *this);
 void camera_set_position(Camera *this, Vec3 position);
 void camera_set_angles(Camera *this, Vec3 angles);
+GLfloat camera_get_fov(const Camera *this);
+void camera_set_fov(Camera *this, GLfloat fov);

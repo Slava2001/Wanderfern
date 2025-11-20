@@ -9,9 +9,11 @@
 
 typedef struct Window {
     GLFWwindow *gl_window;
+    GLFWmonitor *monitor;
+    GLFWvidmode video;
 } Window;
 
 decl_result(Window, Window);
 
-ResultWindow gl_init(int width, int height, const char* title);
+ResultWindow gl_init(const char* title);
 void gl_deinit(Window *window);

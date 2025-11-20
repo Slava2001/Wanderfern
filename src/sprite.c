@@ -50,11 +50,12 @@ ResultSprite sprite_new(const Texture *texture, Rect rect) {
 }
 
 void sprite_draw(Sprite *this, const SceneDrawCtx *dctx, const Transform *transform) {
-    (void)dctx;(void)transform;
+    (void)dctx;
     shader_use(this->shader);
     Mat4 mvp = transform_get_mvp(transform, &this->transform);
     shader_set_mat4(this->shader, "mvp", &mvp);
     glBindVertexArray(this->vertex_arrays);
+    texture_use(this->texture, GL_TEXTURE0);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }

@@ -26,3 +26,8 @@ void texture_drop(Texture *this) {
     glDeleteTextures(1, &this->texture_id);
     this->texture_id = 0;
 }
+
+void texture_use(const Texture *this, GLuint slot_id) {
+    glActiveTexture(slot_id);
+    glBindTexture(GL_TEXTURE_2D, this->texture_id);
+}

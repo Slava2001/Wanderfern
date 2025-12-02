@@ -37,6 +37,8 @@ SRC = src/main.c            \
       src/texture.c         \
       src/stb_image_impl.c  \
       src/cube.c            \
+      src/plant.c           \
+      src/mem.c             \
       src/rect.c
 OBJ = $(patsubst %.c,$(BUILDDIR)/%.c.o,$(SRC))
 

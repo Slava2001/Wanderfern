@@ -5,6 +5,7 @@
 #include "result.h"
 #include "sprite.h"
 #include "texture.h"
+#include "mem.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,6 +40,7 @@ int main() {
     }
     scene->destroy(scene);
     gl_deinit(&window);
+    reci(mem_used(), "Detect memory leak! unfree: %ld blocks", mem_used());
     logi("Terminating app");
     return EXIT_SUCCESS;
 }

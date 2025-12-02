@@ -7,15 +7,17 @@
 #include "sprite.h"
 #include "texture.h"
 #include "cube.h"
+#include "plant.h"
 
 typedef struct MainMenu {
     Scene base;
     PlayerCtl player;
     Terrain terrain;
-    Texture cat_cube_texture;
+    Texture *cat_cube_texture;
     Cube cat_cube;
-    Texture skybox_textures[6];
+    Texture *skybox_textures[6];
     Cube skybox;
+    Plant plant;
 } MainMenu;
 
 decl_result(MainMenu, MainMenu);

@@ -4,8 +4,8 @@
 #include <math.h>
 
 decl_result(SharedShaderPtr, Shader*);
-static ResultSharedShaderPtr sprite_shared_shader_get(void);
-static void sprite_shared_shader_drop(void);
+static ResultSharedShaderPtr shared_shader_get(void);
+static void shared_shader_drop(void);
 
 ResultSprite sprite_new(const Texture *texture, Rect rect) {
     const GLfloat vertices[] = {
@@ -41,7 +41,7 @@ ResultSprite sprite_new(const Texture *texture, Rect rect) {
     return (ResultSprite)Ok(((Sprite) {
         .transform = transform_new(),
         .texture = texture,
-        .shader = try(sprite_shared_shader_get(),
+        .shader = try(shared_shader_get(),
                       (ResultSprite)Err(), "Failed to get shared shader"),
         .vertex_buff = vbo,
         .vertex_arrays = vao,
@@ -68,14 +68,14 @@ void sprite_drop(Sprite *this) {
     this->vertex_buff = 0;
     this->index_buff = 0;
     this->shader = NULL;
-    sprite_shared_shader_drop();
+    shared_shader_drop();
 }
 
 static Shader shared_shader;
 static unsigned shared_shader_user_count = 0;
 static bool shared_shader_ready = false;
 
-static ResultSharedShaderPtr sprite_shared_shader_get() {
+static ResultSharedShaderPtr shared_shader_get() {
     if (!shared_shader_ready) {
         shared_shader = try(shader_new(
         "#version 330 core\n"
@@ -93,6 +93,9 @@ static ResultSharedShaderPtr sprite_shared_shader_get() {
         "uniform sampler2D texture1;\n"
         "void main() {\n"
             "color = texture(texture1, TexCoord);\n"
+            "if (color.a < 0.1) {\n"
+            "    discard;\n"
+            "}\n"
         "}"
         ),
         (ResultSharedShaderPtr)Err(), "Failed to init sprite shared shader");
@@ -102,7 +105,7 @@ static ResultSharedShaderPtr sprite_shared_shader_get() {
     return (ResultSharedShaderPtr)Ok(&shared_shader);
 }
 
-static void sprite_shared_shader_drop() {
+static void shared_shader_drop() {
     shared_shader_user_count--;
     if (!shared_shader_user_count) {
         shader_drop(&shared_shader);

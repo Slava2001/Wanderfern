@@ -11,6 +11,7 @@
 
 typedef struct Cube {
     Transform transform;
+    Shader *shader;
     Sprite face[6];
 } Cube;
 

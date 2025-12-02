@@ -9,8 +9,8 @@ ResultCube cube_new(const Texture *textures[], Rect rects[]) {
     cube.transform = transform_new();
 
     struct FaceTransform {
-        GLfloat angle;
-        Vec3 axis;
+      GLfloat angle;
+      Vec3 axis;
     } face_transform[6] = {
         { .angle = 0.0f,
           .axis = vec3(1, 1, 1) },
@@ -30,7 +30,7 @@ ResultCube cube_new(const Texture *textures[], Rect rects[]) {
                            (ResultCube)Err(), "Failed to init cube face");
         cube.face[i].transform = transform_rotate(&cube.face[i].transform,
                                                   face_transform[i].angle, face_transform[i].axis);
-        cube.face[i].transform = transform_translate(&cube.face[i].transform, vec3(0, 0, 0.499f));
+        cube.face[i].transform = transform_translate(&cube.face[i].transform, vec3(0, 0, 0.5f));
     }
     return (ResultCube)Ok(cube);
 }

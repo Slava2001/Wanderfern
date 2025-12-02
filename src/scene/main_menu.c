@@ -24,10 +24,11 @@ ResultMainMenu main_menu_new(const Window* window) {
             .far_z = 1000
         }), (ResultMainMenu)Err(), "Failed to create player"),
         .terrain = try(terrain_new(), (ResultMainMenu)Err(), "Failed to create terrain"),
+        .plant = try(plant_new(vec2(2, 0)), (ResultMainMenu)Err(), "Failed to create plant")
     };
 
     main_menu.cat_cube_texture = try(texture_load("assets/cat.jpeg"),
-                                   (ResultMainMenu)Err(), "Failed to load texture for cat cube");
+                                     (ResultMainMenu)Err(), "Failed to load texture for cat cube");
 
     Rect full_texture_rect[6] = { rect_new(0, 0, 1, 1),
                                   rect_new(0, 0, 1, 1),
@@ -35,12 +36,12 @@ ResultMainMenu main_menu_new(const Window* window) {
                                   rect_new(0, 0, 1, 1),
                                   rect_new(0, 0, 1, 1),
                                   rect_new(0, 0, 1, 1) };
-    main_menu.cat_cube = try(cube_new((const Texture* [6]) { &main_menu.cat_cube_texture,
-                                                             &main_menu.cat_cube_texture,
-                                                             &main_menu.cat_cube_texture,
-                                                             &main_menu.cat_cube_texture,
-                                                             &main_menu.cat_cube_texture,
-                                                             &main_menu.cat_cube_texture },
+    main_menu.cat_cube = try(cube_new((const Texture* [6]) { main_menu.cat_cube_texture,
+                                                             main_menu.cat_cube_texture,
+                                                             main_menu.cat_cube_texture,
+                                                             main_menu.cat_cube_texture,
+                                                             main_menu.cat_cube_texture,
+                                                             main_menu.cat_cube_texture },
                                       full_texture_rect),
                              (ResultMainMenu)Err(), "Failed to create cat cube");
     main_menu.cat_cube.transform = transform_translate(&main_menu.cat_cube.transform,
@@ -57,12 +58,12 @@ ResultMainMenu main_menu_new(const Window* window) {
         main_menu.skybox_textures[i] = try(texture_load(skybox_face_path[i]),
                                            (ResultMainMenu)Err(), "Failed to load skybox face");
     }
-    main_menu.skybox = try(cube_new((const Texture* [6]) { &main_menu.skybox_textures[0],
-                                                           &main_menu.skybox_textures[1],
-                                                           &main_menu.skybox_textures[2],
-                                                           &main_menu.skybox_textures[3],
-                                                           &main_menu.skybox_textures[4],
-                                                           &main_menu.skybox_textures[5] },
+    main_menu.skybox = try(cube_new((const Texture* [6]) { main_menu.skybox_textures[0],
+                                                           main_menu.skybox_textures[1],
+                                                           main_menu.skybox_textures[2],
+                                                           main_menu.skybox_textures[3],
+                                                           main_menu.skybox_textures[4],
+                                                           main_menu.skybox_textures[5] },
                                     full_texture_rect),
                            (ResultMainMenu)Err(), "Failed to crate skybox");
     main_menu.skybox.transform = transform_scale(&main_menu.skybox.transform, vec3(500, 500, 500));
@@ -84,10 +85,18 @@ int draw(void *ctx, const SceneDrawCtx *dctx) {
     terrain_draw(&this->terrain, dctx, &t, p.x, p.z);
     cube_draw(&this->cat_cube, dctx, &t);
     cube_draw(&this->skybox, dctx, &t);
+    plant_draw(&this->plant, dctx, &t);
     return 0;
 }
 
 void destroy(void *ctx) {
     MainMenu *this = (MainMenu *)ctx;
-    (void)this;
+    cube_drop(&this->cat_cube);
+    texture_drop(this->cat_cube_texture);
+    cube_drop(&this->skybox);
+    for (int i = 0; i < 6; i++) {
+        texture_drop(this->skybox_textures[i]);
+    }
+    plant_drop(&this->plant);
+    terrain_drop(&this->terrain);
 }

@@ -14,7 +14,7 @@ ResultTerrain terrain_new() {
     for (unsigned i = 0; i < ter.sprite_cnt; i++) {
         float x = (float)(i % 12);
         float y = (float)(i / 10);
-        ter.sprite[i] = try(sprite_new(&ter.texture,
+        ter.sprite[i] = try(sprite_new(ter.texture,
                             rect_new(x / 12.0f, y / 10.0f, 1.0f / 12.0f, 1.0f / 10.0f)),
                             (ResultTerrain)Err(), "Failed to create sprite");
         ter.sprite[i].transform = transform_rotate(&ter.sprite[i].transform,
@@ -59,4 +59,11 @@ void terrain_draw(Terrain *this,
             }
         }
     }
+}
+
+void terrain_drop(Terrain *this) {
+    for (unsigned i = 0; i < this->sprite_cnt; i++) {
+        sprite_drop(&this->sprite[i]);
+    }
+    texture_drop(this->texture);
 }

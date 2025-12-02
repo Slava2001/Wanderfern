@@ -40,7 +40,7 @@ int main() {
     }
     scene->destroy(scene);
     gl_deinit(&window);
-    reci(mem_used(), "Detect memory leak! unfree: %ld blocks", mem_used());
+    reci(mem_used(), "Detect memory leak! unfree: %zu blocks", mem_used());
     logi("Terminating app");
     return EXIT_SUCCESS;
 }

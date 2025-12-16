@@ -1,74 +1,48 @@
 #include "vec.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include "result.h"
 
-Vec3 vec3(GLfloat x, GLfloat y, GLfloat z) {
-    return (Vec3){ .x = x, .y = y, .z = z };
+#include <string.h>
+
+Vec vec_from_static(size_t elem_size, void *buff, size_t buff_len_elems) {
+    return (Vec) {
+        .data = buff,
+        .capacity = buff_len_elems,
+        .elem_size = elem_size,
+        .len = 0,
+        .is_static = true
+    };
 }
 
-Vec3 vec3_add(Vec3 a, Vec3 b) {
-    return vec3(a.x + b.x, a.y + b.y, a.z + b.z);
+int vec_push(Vec *this, void *elem) {
+    reci(this->is_static && this->len >= this->capacity, "Static vector overflow");
+    memcpy(&this->data[this->len * this->elem_size], elem, this->elem_size);
+    this->len++;
+    return 0;
 }
 
-Vec3 vec3_sub(Vec3 a, Vec3 b) {
-    return vec3(a.x - b.x, a.y - b.y, a.z - b.z);
+void* vec_get(Vec *this, size_t index) {
+    return (void*)&this->data[index * this->elem_size];
 }
 
-Vec3 vec3_neg(Vec3 a) {
-    return vec3(-a.x, -a.y, -a.z);
+size_t vec_len(Vec *this) {
+    return this->len;
 }
 
-Vec3 vec3_muls(Vec3 a, GLfloat scalar) {
-    return vec3(a.x * scalar, a.y * scalar, a.z * scalar);
+size_t vec_elem_size(Vec *this) {
+    return this->elem_size;
 }
 
-GLfloat vec3_len(Vec3 a) {
-    return sqrtf(a.x * a.x + a.y * a.y + a.z * a.z);
+size_t vec_size_bytes(Vec *this) {
+    return this->elem_size * this->len;
 }
 
-Vec3 vec3_normalize(Vec3 a) {
-    return vec3_muls(a, 1.0f / vec3_len(a));
-}
-
-Vec3 vec3_cross(Vec3 a, Vec3 b) {
-    return vec3((a.y * b.z) - (a.z * b.y),
-                (a.z * b.x) - (a.x * b.z),
-                (a.x * b.y) - (a.y * b.x));
-}
-
-GLfloat vec3_dot(Vec3 a, Vec3 b) {
-  return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
-}
-
-Vec2 vec2(GLfloat x, GLfloat y) {
-    return (Vec2){ .x = x, .y = y };
-}
-
-Vec2 vec2_add(Vec2 a, Vec2 b) {
-    return vec2(a.x + b.x, a.y + b.y);
-}
-
-Vec2 vec2_sub(Vec2 a, Vec2 b) {
-    return vec2(a.x - b.x, a.y - b.y);
-}
-
-Vec2 vec2_neg(Vec2 a) {
-    return vec2(-a.x, -a.y);
-}
-
-Vec2 vec2_muls(Vec2 a, GLfloat scalar) {
-    return vec2(a.x * scalar, a.y * scalar);
-}
-
-GLfloat vec2_len(Vec2 a) {
-    return sqrtf(a.x * a.x + a.y * a.y);
-}
-
-Vec2 vec2_normalize(Vec2 a) {
-    return vec2_muls(a, 1.0f / vec2_len(a));
-}
-
-Vec2 vec2_rotate(Vec2 a, GLfloat angle_rad) {
-    return vec2(a.x * cosf(angle_rad) - a.y * sinf(angle_rad),
-                a.x * sinf(angle_rad) + a.y * cosf(angle_rad));
+void vec_drop(Vec *this) {
+    if (!this->is_static) {
+        loge("Unexpected vec type");
+    }
+    this->capacity = 0;
+    this->data = NULL;
+    this->elem_size = 0;
+    this->is_static = false;
+    this->len = 0;
 }

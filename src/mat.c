@@ -39,3 +39,19 @@ Mat4 mat4_new_from_array(GLfloat val[static 16]) {
     }
     return res;
 }
+
+Vec3 mat4_mulv(const Mat4* this, Vec3 point) {
+    return vec3(
+        this->values[0] * point.x +
+        this->values[4] * point.y +
+        this->values[8] * point.z +
+        this->values[12],
+        this->values[1] * point.x +
+        this->values[5] * point.y +
+        this->values[9] * point.z +
+        this->values[13],
+        this->values[2] * point.x +
+        this->values[6] * point.y +
+        this->values[10] * point.z +
+        this->values[14]);
+}

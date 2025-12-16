@@ -65,6 +65,15 @@ Mat4 transform_get_mvp(const Transform *this, const Transform *model) {
     return mat4_mul(&pv, &model->view);
 }
 
+Mat4 transform_to_mat(const Transform *this) {
+    return mat4_mul(&this->projection, &this->view);
+}
+
+Vec3 transform_point(const Transform *this, Vec3 point) {
+    Mat4 pv = transform_to_mat(this);
+    return mat4_mulv(&pv, point);
+}
+
 Transform transform_view_look_at(const Transform *this, Vec3 pos, Vec3 target, Vec3 up) {
     Vec3 dir = vec3_normalize(vec3_sub(target, pos));
     Vec3 right = vec3_normalize(vec3_cross(dir, up));

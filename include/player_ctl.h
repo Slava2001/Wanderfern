@@ -1,7 +1,7 @@
 #pragma once
 
 #include "result.h"
-#include "vec.h"
+#include "vecn.h"
 #include "camera.h"
 #include "scene.h"
 

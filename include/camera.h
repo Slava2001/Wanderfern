@@ -2,7 +2,7 @@
 
 #include "gl.h"
 #include "result.h"
-#include "vec.h"
+#include "vecn.h"
 #include "transform.h"
 #include "scene.h"
 

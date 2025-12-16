@@ -1,30 +1,22 @@
 #pragma once
 
-#include "gl.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-typedef struct Vec3 {
-    GLfloat x, y, z;
-} Vec3;
+typedef struct Vec {
+    size_t len;
+    size_t capacity;
+    size_t elem_size;
+    uint8_t *data;
+    bool is_static;
+} Vec;
 
-Vec3 vec3(GLfloat x, GLfloat y, GLfloat z);
-Vec3 vec3_add(Vec3 a, Vec3 b);
-Vec3 vec3_muls(Vec3 a, GLfloat scalar);
-Vec3 vec3_normalize(Vec3 a);
-Vec3 vec3_sub(Vec3 a, Vec3 b);
-Vec3 vec3_neg(Vec3 a);
-Vec3 vec3_cross(Vec3 a, Vec3 b);
-GLfloat vec3_len(Vec3 a);
-GLfloat vec3_dot(Vec3 a, Vec3 b);
-
-typedef struct Vec2 {
-    GLfloat x, y;
-} Vec2;
-
-Vec2 vec2(GLfloat x, GLfloat y);
-Vec2 vec2_add(Vec2 a, Vec2 b);
-Vec2 vec2_muls(Vec2 a, GLfloat scalar);
-Vec2 vec2_normalize(Vec2 a);
-Vec2 vec2_sub(Vec2 a, Vec2 b);
-Vec2 vec2_neg(Vec2 a);
-Vec2 vec2_rotate(Vec2 a, GLfloat angle_rad);
-GLfloat vec2_len(Vec2 a);
+Vec vec_from_static(size_t elem_size, void *buff, size_t buff_len_elems);
+int vec_push(Vec *this, void *elem);
+void* vec_get(Vec *this, size_t index);
+size_t vec_len(Vec *this);
+size_t vec_elem_size(Vec *this);
+/* vec_len(...)*vec_elem_size(...) */
+size_t vec_size_bytes(Vec *this);
+void vec_drop(Vec *this);

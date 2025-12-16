@@ -7,7 +7,7 @@ static size_t allocated_blocks = 0;
 
 ResultVoidPtr mem_alloc(size_t size) {
     void *ptr = malloc(size);
-    rci(!ptr, (ResultVoidPtr)Err(), "Failed to allocate %ld bytes", size);
+    rci(!ptr, (ResultVoidPtr)Err(), "Failed to allocate %zu bytes", size);
     logd("Allocate %zu bytes, addres: 0x%p", size, ptr);
     allocated_blocks++;
     return (ResultVoidPtr)Ok(ptr);

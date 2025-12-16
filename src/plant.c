@@ -89,7 +89,7 @@ int create_plant_vertices_array(
         {0 + 12, 1 + 12},
         {2 + 12, 1 + 12}
     };
-    const const GLuint indices[] = {
+    const GLuint indices[] = {
         0 +  0, 1 +  0, 2 +  0,
         1 +  0, 2 +  0, 3 +  0,
 

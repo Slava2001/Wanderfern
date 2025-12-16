@@ -13,7 +13,7 @@ Vec vec_from_static(size_t elem_size, void *buff, size_t buff_len_elems) {
     };
 }
 
-int vec_push(Vec *this, void *elem) {
+int vec_push(Vec *this, const void *elem) {
     reci(this->is_static && this->len >= this->capacity, "Static vector overflow");
     memcpy(&this->data[this->len * this->elem_size], elem, this->elem_size);
     this->len++;
